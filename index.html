@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Valentine?</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
 
 <style>
   body {
-    background: #ffd6e7;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    height: 100vh;
+    background: #ffd6e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
     overflow: hidden;
   }
 
@@ -23,19 +23,20 @@
     border-radius: 16px;
     text-align: center;
     width: 90%;
-    max-width: 360px;
+    max-width: 350px;
     position: relative;
     z-index: 2;
   }
 
-  h2 { margin-bottom: 20px; }
+  h2 {
+    margin-bottom: 20px;
+  }
 
   button {
-    padding: 12px 20px;
+    padding: 12px 22px;
     font-size: 16px;
     border-radius: 25px;
     border: none;
-    cursor: pointer;
     margin: 10px;
   }
 
@@ -46,27 +47,29 @@
 
   #no {
     background: #ddd;
-    position: absolute;
+    position: fixed;
   }
 
   img {
-    max-width: 100%;
-    border-radius: 12px;
+    width: 100%;
     margin-top: 15px;
+    border-radius: 12px;
   }
 
-  /* Fireworks particles */
   .confetti {
-    position: absolute;
+    position: fixed;
     width: 8px;
     height: 8px;
-    background: red;
-    animation: explode 1.2s linear forwards;
+    border-radius: 50%;
+    animation: explode 1s linear forwards;
   }
 
   @keyframes explode {
-    0% { transform: translate(0,0) scale(1); opacity: 1; }
-    100% {
+    from {
+      transform: translate(0,0) scale(1);
+      opacity: 1;
+    }
+    to {
       transform: translate(
         calc(-150px + 300px * var(--x)),
         calc(-150px + 300px * var(--y))
@@ -86,53 +89,49 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const card = document.getElementById("card");
+  const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const card = document.getElementById("card");
 
-    // Set initial position for NO button
-    noBtn.style.left = "55%";
-    noBtn.style.top = "70%";
+  // Initial NO position
+  noBtn.style.left = "55%";
+  noBtn.style.top = "70%";
 
-    function moveNo() {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 120);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+  function moveNo() {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  noBtn.addEventListener("touchstart", moveNo);
+  noBtn.addEventListener("mouseover", moveNo);
+  noBtn.addEventListener("click", moveNo);
+
+  function fireworks() {
+    for (let i = 0; i < 40; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = "50%";
+      c.style.top = "50%";
+      c.style.background = hsl(${Math.random()*360},100%,50%);
+      c.style.setProperty("--x", Math.random());
+      c.style.setProperty("--y", Math.random());
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 1000);
     }
+  }
 
-    noBtn.addEventListener("touchstart", moveNo);
-    noBtn.addEventListener("mouseover", moveNo);
-    noBtn.addEventListener("click", moveNo);
-
-    function fireworks() {
-      for (let i = 0; i < 40; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = "50%";
-        confetti.style.top = "50%";
-        confetti.style.background =
-          hsl(${Math.random() * 360},100%,50%);
-        confetti.style.setProperty("--x", Math.random());
-        confetti.style.setProperty("--y", Math.random());
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 1200);
-      }
-    }
-
-    yesBtn.addEventListener("click", () => {
-      card.innerHTML = `
-        <h2>YAYYY!!! 🎆💘</h2>
-        <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" />
-        <p>You’re officially my Valentine 😏</p>
-      `;
-      fireworks();
-      setInterval(fireworks, 1200);
-    });
-  });
+  yesBtn.onclick = () => {
+    card.innerHTML = `
+      <h2>YAYYY!!! 🎆💘</h2>
+      <img src="https://media.giphy.com/media/26tPghhb310muUkEw/giphy.gif">
+      <p>You’re officially my Valentine 😌</p>
+    `;
+    fireworks();
+    setInterval(fireworks, 1200);
+  };
 </script>
 
 </body>
 </html>
-
